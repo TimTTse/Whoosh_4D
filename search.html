@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+  <!-- Latest compiled and minified CSS -->
+    <!-- <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"> -->
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script>
+    function fillForm(page){
+      document.getElementById('page').value=page;
+      document.getElementById('searchForm').submit();
+    }
+    </script>
+    <!-- <style>
+    #pagesBottom {
+      position: fixed;
+      bottom: 0;
+      height:40px;
+      width: 100%;
+    }
+    </style> -->
+    <TITLE>4D Docs Search</TITLE>
+  </head>
+  <body>
+    <form id="searchForm" name="search" action="/search" method="get">
+      Search: <input type="text" name="query" id="query" value="<!--4DText val -->">
+      <input type="submit" value="Search Docs">
+      <input type="hidden" name="page" id="page" value="1">
+    </form> 
+    <!-- <a href="#" onclick="fillForm(2)">submit</a> -->
+
+
+
+    <hr />
+    <div id="searchResults">
+      <table cellpadding="2">
+      <!--4DIF val#""-->
+      <tr>
+        <td  id="overview" align="left"><i>Page <!--4DTEXT currentPage--> of <!--4DTEXT numPages--></i>  ---  <i><!--4DTEXT numResults--> results (<!--4DTEXT runtime--> secs)</i>
+        <!--4DIF currentPage>1-->  <a href="javascript:{}"" onclick="fillForm(<!--4DEVAL currentPage-1-->)">Prev</a><!--4DENDIF-->
+        <!--4DIF currentPage#numPages--> <a href="javascript:{}"" onclick="fillForm(<!--4DEVAL currentPage+1-->)">Next</a><!--4DENDIF--></td>
+      </tr>
+      <!--4DENDIF-->
+
+        <!--4DLOOP arrTitles -->
+        <tr><td  id="title" align="left"><a target="_blank" href="<!--4DText arrPaths{arrTitles}-->"><!--4DTEXT arrTitles{arrTitles}--></a></td></tr>
+        <tr><td  id="content" align="left"><!--4DHTML arrContents{arrTitles}--></td></tr>
+        <tr><td></td></tr>
+        <!--4DENDLOOP-->
+      </table>
+    </div>
+    <hr/>
+  </body>
+  <footer>
+    <div id="pagesBottom">
+      <!--4DIF val#""--><i>Page <!--4DTEXT currentPage--> of <!--4DTEXT numPages--></i><!--4DENDIF-->
+      <table>
+        <tr>
+          <!--4DIF currentPage>1--><td><a href="javascript:{}" onclick="fillForm(<!--4DEVAL currentPage-1-->)">Prev</a></td><td>&nbsp;</td><!--4DENDIF-->
+          <!--4DIF numPages>0-->
+            <!--4DIF currentPage>6-->
+            <!--4DEVAL $i:=currentPage-5 -->
+            <!--4DELSE-->
+            <!--4DEVAL $i:=1-->
+            <!--4DENDIF-->
+            <!--4DEVAL $end:=$i+9-->
+            <!--4DLOOP ($i<=$end) & ($i<=numPages)-->
+              <!--4DIF $i=currentPage -->
+              <td bgcolor="#E0E0E0"><!--4DTEXT $i--></td>
+              <!--4DELSE-->
+              <td><a href="javascript:{}" onclick="fillForm(<!--4DTEXT $i-->)"><!--4DTEXT $i--></a></td>
+              <!--4DENDIF-->
+              <!--#4DEVAL $i:=$i+1-->
+            <!--4DENDLOOP-->
+            <!--4DENDIF-->
+          <!--4DIF currentPage#numPages--><td>&nbsp;</td><td><a href="javascript:{}"" onclick="fillForm(<!--4DEVAL currentPage+1-->)">Next</a></td><!--4DENDIF-->
+        </tr>
+      </table>
+    </div>
+  </footer>
+</html>
+<!-- <a href="file:///localhost/index.html">Test</a> numPages-->
